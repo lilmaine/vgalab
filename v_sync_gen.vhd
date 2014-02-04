@@ -42,8 +42,55 @@ end v_sync_gen;
 
 architecture Behavioral of v_sync_gen is
 
-begin
+signal count: unsigned(10 downto 0):= "00000000000";
+signal count_next: unsigned(10 downto 0);
 
+begin
+	count_next <= count + 1;
+	row <= count;
+	process(reset)
+	begin
+		if (reset='1') then
+			count <= "00000000000";
+			v_sync <= '0';
+			blank <= '1';
+			completed <= '0';
+		end if;
+	end process;
+	
+	process (clk, h_completed)
+	begin
+		if (clk'event and clk='1' and h_completed) then
+			if (count < 480) then
+				count <= count_next;
+				v_sync <= '1';
+				blank <= '0';
+				completed <= '0';
+			elsif (count < 490) then
+				count <= count_next;
+				v_sync <= '1';
+				blank <= '1';
+				completed <= '0';
+			elsif (count < 492) then
+				count <= count_next;
+				v_sync <= '0';
+				blank <= '1';
+				completed <= '0';		
+			elsif (count < 524) then
+				count <= count_next;
+				v_sync <= '1';
+				blank <= '1';
+				completed <= '0';				
+			else 
+				count <= count_next;
+				v_sync <= '1';
+				blank <= '1';
+				completed <= '1';					
+			end if;	
+		end if;
+	end process;		
+
+row<= std_logic_vector(count) when count < 480 else "00000000000"; 
 
 end Behavioral;
 
