@@ -40,8 +40,47 @@ end h_sync_gen;
 
 architecture Behavioral of h_sync_gen is
 
-begin
+signal count: unsigned(10 downto 0):= "00000000000";
+signal count_next: unsigned(10 downto 0);
 
+begin
+	count_next <= count + 1;
+	column <= count;
+	process(clk, reset)
+	begin
+		if (reset='1') then
+			count <= "00000000000";
+		elsif (clk'event and clk='1') then
+			if (count < 640) then
+				count <= count_next;
+				h_sync <= '1';
+				blank <= '0';
+				completed <= '0';
+			elsif (count < 656) then
+				count <= count_next;
+				h_sync <= '1';
+				blank <= '1';
+				completed <= '0';
+			elsif (count < 752) then
+				count <= count_next;
+				h_sync <= '0';
+				blank <= '1';
+				completed <= '0';		
+			elsif (count < 799) then
+				count <= count_next;
+				h_sync <= '1';
+				blank <= '1';
+				completed <= '0';				
+			else 
+				count <= count_next;
+				h_sync <= '1';
+				blank <= '1';
+				completed <= '1';					
+			end if;	
+		end if;	
+	end process;
+
+column <= std_logic_vector(count) when count < 640 else "00000000000"; 
 
 end Behavioral;
 
