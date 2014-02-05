@@ -94,23 +94,23 @@ begin
 		
 			case state_reg is
 				when active_video =>
-					if (count_reg >= 480) then
+					if (count_reg = 480) then
 						state_next <= front_porch;
 					end if;
 				when front_porch =>
-					if (count_reg >= 10) then
+					if (count_reg = 10) then
 						state_next <= sync;
 					end if;
 				when sync =>
-					if (count_reg >= 2) then
+					if (count_reg = 2) then
 						state_next <= back_porch;
 					end if;
 				when back_porch =>
-					if (count_reg >= 33) then
+					if (count_reg = 33) then
 						state_next <= completed_state;
 					end if;				
 				when completed_state =>
-					state_next <= back_porch;
+					state_next <= active_video;
 			end case;		
 			end if;
 	end process;

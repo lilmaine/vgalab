@@ -22,45 +22,33 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
+library UNISIM;
+use UNISIM.VComponents.all;
 
 entity atlys_lab_video is
     Port ( clk : in  STD_LOGIC;
            reset : in  STD_LOGIC;
-           tmds : in  STD_LOGIC_VECTOR (3 downto 0);
-           tmdsb : in  STD_LOGIC_VECTOR (3 downto 0));
+			  SW1: in STD_LOGIC;
+			  SW2: in STD_LOGIC;			  
+           tmds : out  STD_LOGIC_VECTOR (3 downto 0);
+           tmdsb : out  STD_LOGIC_VECTOR (3 downto 0));
 end atlys_lab_video;
 
 architecture barnett of atlys_lab_video is
     -- TODO: Signals, as needed
-	 signal row_sig, blank_sig, column_sig, hsync_sig,vsync_sig, pixelclk: std_logic;
+	 signal pixel_clk, red_s, blue_s, green_s, h_sync, v_sync, blank, clock_s, serialize_clk, serialize_clk_n: std_logic;
+	 signal red, green, blue: std_logic_vector (7 downto 0);
+	 signal row_sig, column_sig: unsigned (10 downto 0);
+	 
+	 
 begin
 		
 	--Instantiate VGA SYNC--
---	Inst_vga_sync: entity work.vga_sync(Behavioral) PORT MAP(
---		clk => pixelclk,
-	--	reset => reset,
-		--h_sync => hsync_sig,
-		--v_sync => vsync_sig,
-		--v_completed => open,
---		blank => blank_sig,
---		row => row_sig,
---		column => column_sig
---	);
 
---	Inst_pixel_gen: entity work.pixel_gen(Behavioral) PORT MAP(
---		row => row_sig,
---		column => column_sig,
---		blank => blank_sig,
---		r => ???,
---		g => ???,
---		b => ???,
---	);
     -- Clock divider - creates pixel clock from 100MHz clock
     inst_DCM_pixel: DCM
     generic map(
@@ -89,6 +77,27 @@ begin
             );
 
     -- TODO: VGA component instantiation
+	Inst_vga_sync: entity work.vga_sync(Behavioral) PORT MAP(
+		clk => pixel_clk,
+		reset => reset,
+		h_sync => h_sync,
+		v_sync => v_sync,
+		v_completed => open,
+		blank => blank,
+		row => row_sig, 
+		column => column_sig 
+	);
+	Inst_pixel_gen: entity work.pixel_gen(Behavioral) PORT MAP(
+		row => row_sig,
+		column => column_sig,
+		blank => blank,
+		switch_1 => SW1,
+		switch_2 => SW2,
+		r => red,
+		g => green,
+		b => blue
+	);	 
+	 
     -- TODO: Pixel generator component instantiation
 
     -- Convert VGA signals to HDMI (actually, DVID ... but close enough)

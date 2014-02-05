@@ -26,8 +26,8 @@ use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
+library UNISIM;
+use UNISIM.VComponents.all;
 
 entity vga_sync is
     Port ( clk : in  STD_LOGIC;
@@ -52,7 +52,7 @@ begin
 		h_sync => h_sync,
 		blank => hblank_sig,
 		completed => hcompleted_sig,
-		column => column
+		column => column 
 	);
 
 	Inst_v_sync_gen:  entity work.v_sync_gen(vlook_ahead_moore) PORT MAP(
