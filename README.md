@@ -14,6 +14,10 @@ Implementation
 
 ![sweet schematic](schematic.png)
 
+vsync and hsync are implemented using moore state machines.
+
+![h_sync] (hsyncstate.png)
+
 
 
 Test/Debug
