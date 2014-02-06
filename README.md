@@ -1,10 +1,23 @@
 vgalab
 ======
 
+
+Introduction
+
 VGA Synchronization 
 
 This lab focused on using simple readable code and mealy or moore machines to get an FPGA to sync with a monitor via dvi
 to HDMI.
+
+
+Implementation
+
+![sweet schematic](schematic.png)
+
+vsync and hsync are implemented using moore state machines.
+
+![h_sync] (hsyncstate.png)
+
 
 
 Test/Debug
