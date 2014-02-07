@@ -3,6 +3,7 @@ vgalab
 
 
 Introduction
+============
 
 VGA Synchronization 
 
@@ -11,16 +12,21 @@ to HDMI.
 
 
 Implementation
-
+==============
+___________
 ![sweet schematic](schematic.png)
 
 vsync and hsync are implemented using moore state machines.
 
 ![h_sync] (hsyncstate.png)
 
+![v_sync] (vsyncstate.png)
+
 
 
 Test/Debug
+===========
+___________
 
 Since I chose not to originally implement my code using the techniques given in the book I had a lot of problems that were
 hard to diagnose. Eventually, at the instructors behest, I recoded and found that my test bench worked for the h_sync_gen.
@@ -28,6 +34,7 @@ When encountering problems at the VGA_sync level I created a test bench for it a
 the top level but simply tested it on the monitor.
 
 Conclusion
+===========
 
 I think this lab was a little too difficult for the first lab and would have rather had practice with something that
 required a little less data abstraction to get my feet wet before diving in head first with no helmet.
